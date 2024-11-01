@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <!-- Add the splash screen theme here -->
+    <style name="Theme.IHearYou.Splash" parent="Theme.SplashScreen">
+        <!-- Background color or drawable -->
+        <item name="windowSplashScreenBackground">#789EE0</item>
+
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>
+
+
+
+        <!--  Customize the animation -->
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="postSplashScreenTheme">@style/Theme.IHearYou</item>
+    </style>
+
+
+</resources>
+
+

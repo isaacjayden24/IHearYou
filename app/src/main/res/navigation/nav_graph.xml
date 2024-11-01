@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.project.ihearyou.fragment.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_gettingStartedFragment"
+            app:destination="@id/gettingStartedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gettingStartedFragment"
+        android:name="com.project.ihearyou.fragment.GettingStartedFragment"
+        android:label="fragment_getting_started"
+        tools:layout="@layout/fragment_getting_started" >
+        <action
+            android:id="@+id/action_gettingStartedFragment_to_recordingVoiceFragment"
+            app:destination="@id/recordingVoiceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recordingVoiceFragment"
+        android:name="com.project.ihearyou.fragment.RecordingVoiceFragment"
+        android:label="fragment_recording_voice"
+        tools:layout="@layout/fragment_recording_voice" />
+</navigation>
