@@ -6,11 +6,7 @@
     <style name="Theme.IHearYou.Splash" parent="Theme.SplashScreen">
         <!-- Background color or drawable -->
         <item name="windowSplashScreenBackground">#789EE0</item>
-
-        <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>
-
-
-
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground </item>
         <!--  Customize the animation -->
         <item name="windowSplashScreenAnimationDuration">1000</item>
         <item name="postSplashScreenTheme">@style/Theme.IHearYou</item>
