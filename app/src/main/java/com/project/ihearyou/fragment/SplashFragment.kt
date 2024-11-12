@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import com.project.ihearyou.R
 
 
-
 /**
  * A simple [Fragment] subclass.
  * Use the [SplashFragment.newInstance] factory method to
@@ -21,6 +20,7 @@ class SplashFragment : Fragment() {
 
     private lateinit var titleText:TextView
     private lateinit var illustrationImageView: ImageView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,12 +36,15 @@ class SplashFragment : Fragment() {
         titleText=view.findViewById(R.id.titleText)
         illustrationImageView=view.findViewById(R.id.illustration)
 
+
         titleText.setOnClickListener(){
             findNavController().navigate(R.id.action_splashFragment_to_gettingStartedFragment)
         }
         illustrationImageView.setOnClickListener(){
             findNavController().navigate(R.id.action_splashFragment_to_gettingStartedFragment)
         }
+
+
         return view
     }
 

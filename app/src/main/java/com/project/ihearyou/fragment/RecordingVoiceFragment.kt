@@ -1,8 +1,6 @@
 package com.project.ihearyou.fragment
 
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Color
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
@@ -14,12 +12,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.project.ihearyou.R
 import java.util.Locale
 
-class RecordingVoiceFragment : Fragment() {
+/*class RecordingVoiceFragment : Fragment() {
 
     private lateinit var recognizer: SpeechRecognizer
     private lateinit var tts: TextToSpeech
@@ -70,13 +68,7 @@ class RecordingVoiceFragment : Fragment() {
         }
     }
 
-  /*  private fun startListening() {
-        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.US)//Locale.getDefault())
-        }
-        recognizer.startListening(intent)
-    }*/
+
 
     private fun startListening() {
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
@@ -143,15 +135,17 @@ class RecordingVoiceFragment : Fragment() {
     }
 
     private fun showColorScreen(color: String) {
-        val mainView = view ?: return
+      /*  val mainView = view ?: return*/
         when (color) {
             "blue" -> {
-                mainView.setBackgroundColor(Color.BLUE)
-                respondToUser("Here is a blue screen")
+               /* mainView.setBackgroundColor(Color.BLUE)
+                respondToUser("Here is a blue screen")*/
+                findNavController().navigate(R.id.action_recordingVoiceFragment_to_blueFragment)
             }
             "red" -> {
-                mainView.setBackgroundColor(Color.RED)
-                respondToUser("Here is the red screen")
+               /* mainView.setBackgroundColor(Color.RED)
+                respondToUser("Here is the red screen")*/
+                findNavController().navigate(R.id.action_recordingVoiceFragment_to_blueFragment)
             }
         }
     }
@@ -166,4 +160,119 @@ class RecordingVoiceFragment : Fragment() {
         recognizer.destroy()
         super.onDestroyView()
     }
+}*/
+
+
+
+class RecordingVoiceFragment : Fragment() {
+    private lateinit var speechRecognizer: SpeechRecognizer
+    private lateinit var textToSpeech: TextToSpeech
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_recording_voice, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        textToSpeech = TextToSpeech(requireContext()) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                textToSpeech.language = Locale.US
+            }
+        }
+
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(requireContext())
+
+        view.findViewById<Button>(R.id.recordingButton).setOnClickListener {
+            startListening()
+        }
+    }
+
+    private fun startListening() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.US)
+
+        speechRecognizer.setRecognitionListener(object : RecognitionListener {
+            override fun onResults(results: Bundle?) {
+                val spokenText = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull()
+                handleVoiceCommand(spokenText)
+            }
+
+            override fun onPartialResults(p0: Bundle?) {
+
+            }
+
+            override fun onEvent(p0: Int, p1: Bundle?) {
+
+            }
+
+            override fun onReadyForSpeech(p0: Bundle?) {
+                Toast.makeText(requireContext(), "Listening...", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onBeginningOfSpeech() {
+
+            }
+
+            override fun onRmsChanged(p0: Float) {
+                Log.d("RecordingVoiceFragment", "Sound level:  dB")
+            }
+
+            override fun onBufferReceived(p0: ByteArray?) {
+
+            }
+
+            override fun onEndOfSpeech() {
+
+            }
+
+            override fun onError(error: Int) {
+                val errorMessage = when (error) {
+                    SpeechRecognizer.ERROR_AUDIO -> "Audio recording error"
+                    SpeechRecognizer.ERROR_CLIENT -> "Client-side error"
+                    SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> "Insufficient permissions"
+                    SpeechRecognizer.ERROR_NETWORK -> "Network error"
+                    SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> "Network timeout"
+                    SpeechRecognizer.ERROR_NO_MATCH -> "No match found"
+                    SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> "Recognition service busy"
+                    SpeechRecognizer.ERROR_SERVER -> "Server error"
+                    SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> "No speech input"
+                    else -> "Unknown error"
+                }
+                Toast.makeText(requireContext(), "Error: $errorMessage", Toast.LENGTH_SHORT).show()
+            }
+
+            // Other overrides can be left empty
+        })
+        speechRecognizer.startListening(intent)
+    }
+
+    private fun handleVoiceCommand(spokenText: String?) {
+        val navController = findNavController()
+
+        when {
+            spokenText?.contains("blue", ignoreCase = true) == true -> {
+                textToSpeech.speak("This is the blue color", TextToSpeech.QUEUE_FLUSH, null, null)
+                navController.navigate(R.id.blueFragment)
+            }
+            spokenText?.contains("red", ignoreCase = true) == true -> {
+                textToSpeech.speak("This is the red color", TextToSpeech.QUEUE_FLUSH, null, null)
+                navController.navigate(R.id.redFragment)
+            }
+            else -> {
+                textToSpeech.speak("Color not recognized", TextToSpeech.QUEUE_FLUSH, null, null)
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        speechRecognizer.destroy()
+        textToSpeech.shutdown()
+    }
 }
+

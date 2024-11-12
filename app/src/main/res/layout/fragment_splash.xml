@@ -34,7 +34,4 @@ android:layout_height="match_parent"
         app:layout_constraintTop_toBottomOf="@id/illustration" />
 
 
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

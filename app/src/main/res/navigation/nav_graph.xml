@@ -28,5 +28,22 @@
         android:id="@+id/recordingVoiceFragment"
         android:name="com.project.ihearyou.fragment.RecordingVoiceFragment"
         android:label="fragment_recording_voice"
-        tools:layout="@layout/fragment_recording_voice" />
+        tools:layout="@layout/fragment_recording_voice" >
+        <action
+            android:id="@+id/action_recordingVoiceFragment_to_blueFragment"
+            app:destination="@id/blueFragment" />
+        <action
+            android:id="@+id/action_recordingVoiceFragment_to_redFragment"
+            app:destination="@id/redFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/blueFragment"
+        android:name="com.project.ihearyou.fragment.BlueFragment"
+        android:label="fragment_blue"
+        tools:layout="@layout/fragment_blue" />
+    <fragment
+        android:id="@+id/redFragment"
+        android:name="com.project.ihearyou.fragment.RedFragment"
+        android:label="fragment_red"
+        tools:layout="@layout/fragment_red" />
 </navigation>
